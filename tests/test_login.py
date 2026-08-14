@@ -30,12 +30,7 @@ class TestLogin:
         """A valid user should be able to log in and leave the login screen."""
         login_page = LoginPage(driver)
         login_page.login(STANDARD_USER, PASSWORD)
-
-        # Once login succeeds, the Username field should no longer be present
-        # (we've navigated away to the products/home screen).
-        assert not login_page.is_login_screen_displayed(), (
-            "Expected to navigate away from the login screen after a valid login"
-        )
+        login_page.wait_for_login_success()
 
     @pytest.mark.skip(
         reason="Error message locator not yet confirmed via Appium Inspector — "

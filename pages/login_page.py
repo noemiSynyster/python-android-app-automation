@@ -14,7 +14,7 @@ class LoginPage(BasePage):
 
     # Fallback locator for the "Android App Compatibility" system dialog,
     # in case it appears and blocks interaction with the login form.
-    SYSTEM_DIALOG_OK_BUTTON = (AppiumBy.ID, "android:id/button1")
+    SYSTEM_DIALOG_OK_BUTTON = (AppiumBy.ID, "android:id/button2")
 
     def enter_username(self, username):
         self.send_keys(self.USERNAME_FIELD, username)
@@ -34,6 +34,16 @@ class LoginPage(BasePage):
         self.enter_username(username)
         self.enter_password(password)
         self.tap_login()
+        return self
+
+    def wait_for_login_success(self, timeout=15):
+        """
+        Wait until the login screen has actually transitioned away
+        (Username field no longer present), instead of checking once
+        immediately after tapping LOGIN — avoids false negatives caused
+        by the app's transition animation still being in progress.
+        """
+        self.wait_for_element_to_disappear(self.USERNAME_FIELD, timeout=timeout)
         return self
 
     def is_login_screen_displayed(self):
