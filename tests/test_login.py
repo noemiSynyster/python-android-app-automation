@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from pages.login_page import LoginPage
+from src.pages.login_page import LoginPage
 
 load_dotenv()
 

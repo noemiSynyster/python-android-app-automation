@@ -3,7 +3,7 @@ from appium import webdriver
 from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
-from config.capabilities import DEFAULT_CAPABILITIES
+from src.config.capabilities import DEFAULT_CAPABILITIES
 
 APPIUM_SERVER_URL = "http://127.0.0.1:4723"
 
