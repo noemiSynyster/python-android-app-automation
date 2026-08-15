@@ -1,5 +1,4 @@
 import os
-import pytest
 from dotenv import load_dotenv
 from pages.login_page import LoginPage
 
@@ -32,17 +31,17 @@ class TestLogin:
         login_page.login(STANDARD_USER, PASSWORD)
         login_page.wait_for_login_success()
 
-    @pytest.mark.skip(
-        reason="Error message locator not yet confirmed via Appium Inspector — "
-        "verify the element shown for locked_out_user before enabling."
-    )
     def test_locked_out_user_cannot_login(self, driver):
         """A locked-out user should see an error and remain on the login screen."""
         login_page = LoginPage(driver)
         login_page.login(LOCKED_OUT_USER, PASSWORD)
-
+ 
+        assert login_page.is_error_message_displayed(), (
+            "Expected an error message to be shown for locked_out_user"
+        )
+        assert "locked out" in login_page.get_error_message_text().lower(), (
+            "Expected the error message to mention the account is locked out"
+        )
         assert login_page.is_login_screen_displayed(), (
             "Expected locked_out_user to remain on the login screen after a failed login"
         )
-        # TODO: once the error banner's locator is confirmed in Inspector, add:
-        # assert login_page.is_displayed(login_page.ERROR_MESSAGE)

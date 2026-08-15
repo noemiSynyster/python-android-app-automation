@@ -11,6 +11,14 @@ class LoginPage(BasePage):
     USERNAME_FIELD = (AppiumBy.ACCESSIBILITY_ID, "test-Username")
     PASSWORD_FIELD = (AppiumBy.ACCESSIBILITY_ID, "test-Password")
     LOGIN_BUTTON = (AppiumBy.ACCESSIBILITY_ID, "test-LOGIN")
+    ERROR_MESSAGE = (AppiumBy.ACCESSIBILITY_ID, "test-Error message")
+    # The container above has no text of its own — the actual message lives in a
+    # child TextView. Locate it structurally (by parent) rather than by exact
+    # text, so this doesn't break if the copy changes.
+    ERROR_MESSAGE_TEXT = (
+        AppiumBy.XPATH,
+        '//android.view.ViewGroup[@content-desc="test-Error message"]/android.widget.TextView',
+    )
 
     # Fallback locator for the "Android App Compatibility" system dialog,
     # in case it appears and blocks interaction with the login form.
@@ -48,3 +56,9 @@ class LoginPage(BasePage):
 
     def is_login_screen_displayed(self):
         return self.is_displayed(self.USERNAME_FIELD, timeout=10)
+    
+    def is_error_message_displayed(self, timeout=10):
+        return self.is_displayed(self.ERROR_MESSAGE, timeout=timeout)
+ 
+    def get_error_message_text(self):
+        return self.get_text(self.ERROR_MESSAGE_TEXT)
